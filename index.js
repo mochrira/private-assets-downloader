@@ -58,7 +58,7 @@ async function main() {
         let version = program.opts().version;
 
         let dest = program.opts().dest;
-        let extractDir = path.resolve(__dirname, dest);
+        let extractDir = path.resolve(process.cwd(), dest);
         if(!fs.existsSync(extractDir)) throw "Destination directory not exists";
 
         let token = await promptToken();
@@ -80,7 +80,7 @@ async function main() {
         let assetDetails = release.data.assets.filter((a) => a.name == asset)[0] ?? null;
         if(assetDetails == null) throw asset + " not found on speficied version (" + version + ")";
 
-        let tmpDir = path.resolve(__dirname, tmp);
+        let tmpDir = path.resolve(process.cwd(), tmp);
         if(fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
         fs.mkdirSync(tmpDir);
 
