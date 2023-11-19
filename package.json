@@ -1,0 +1,16 @@
+{
+  "name": "@wajek/pad",
+  "version": "1.0.0",
+  "description": "Github Private Assets Downloader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "decompress": "^4.2.1",
+    "node-fetch-commonjs": "^3.3.2",
+    "octokit": "^3.1.2"
+  }
+}
