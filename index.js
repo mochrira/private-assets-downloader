@@ -3,6 +3,8 @@ const { Octokit } = require('octokit');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const decompress = require('decompress');
+const path = require('path');
+const { program } = require('commander');
 
 function downloadAsset(token, asset, output) {
     return new Promise((resolve, reject) => {
@@ -35,56 +37,66 @@ async function promptToken() {
     });
 }
 
-module.exports = async (options) => {
-    let owner = options.owner;
-    if(!owner) throw "Undefined owner";
+async function main() {
+    try {
+        program
+        .name('private-assets-downloader')
+        .description('CLI to download private .zip assets from github repository then extract it')
+        .requiredOption('-o, --owner <char>', 'Owner of repository')
+        .requiredOption('-r, --repository <char>', 'Repository name')
+        .requiredOption('-a, --asset <char>', 'Asset filename')
+        .requiredOption('-d, --dest <char>', 'Destination directory')
+        .option('-v, --version <char>', 'Version, default: latest, Example: tags/1.7.3', 'latest')
+        .option('-t, --tmp <char>', 'Tmp directory, default: .tmp', '.tmp');
 
-    let repo = options.repo;
-    if(!repo) throw "Undefined repository";
+        program.parse();
 
-    let assetFileName = options.assetFileName;
-    if(!assetFileName) throw "Undefined asset file name";
+        let owner = program.opts().owner;
+        let repository = program.opts().repository;
+        let asset = program.opts().asset;
+        let tmp = program.opts().tmp;
+        let version = program.opts().version;
 
-    let tag = options.tag;
-    if(!tag) throw "Undefined tag";
+        let dest = program.opts().dest;
+        let extractDir = path.resolve(__dirname, dest);
+        if(!fs.existsSync(extractDir)) throw "Destination directory not exists";
 
-    let tmpDir = options.tmpDir;
-    if(!tmpDir) throw "Undefined temporary directory";
+        let token = await promptToken();
+        console.log("Gathering information...");
+        
+        const octokit = new Octokit({
+            auth: token,
+            request: { fetch }
+        });
 
-    let extractDir = options.extractDir;
-    if(!extractDir) throw "Undefined extract directory";
+        let release = await octokit.request('GET /repos/' + owner + '/' + repository + '/releases/' + version, {
+            owner: owner,
+            repo: repository,
+            headers: {
+                'X-Github-Api-Version': '2022-11-28'
+            }
+        });
 
-    let token = await promptToken();
+        let assetDetails = release.data.assets.filter((a) => a.name == asset)[0] ?? null;
+        if(assetDetails == null) throw asset + " not found on speficied version (" + version + ")";
 
-    console.log("Gathering information...");
-    
-    const octokit = new Octokit({
-        auth: token,
-        request: { fetch }
-    });
+        let tmpDir = path.resolve(__dirname, tmp);
+        if(fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
+        fs.mkdirSync(tmpDir);
 
-    let release = await octokit.request('GET /repos/Wajek-Studio/akunting-core/releases/' + tag, {
-        owner: owner,
-        repo: repo,
-        headers: {
-            'X-Github-Api-Version': '2022-11-28'
-        }
-    });
-    let asset = release.data.assets.filter((asset) => asset.name == assetFileName)[0] ?? null;
-    if(asset == null) throw "Release with specified tag and asset filename not found";
+        let output = path.resolve(tmpDir, assetDetails.name);
+        console.log("Downloading " + assetDetails.name + '...');
+        await downloadAsset(token, assetDetails, output);
+        if(!fs.existsSync(output)) throw "Output file not created. It may permission problem";
 
-    if(fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
-    fs.mkdirSync(tmpDir);
+        console.log("Extracting " + assetDetails.name + '...');
+        await decompress(output, extractDir);
 
-    let output = tmpDir + '/' + asset.name;
-    console.log("Downloading " + asset.name + '...');
-    await downloadAsset(token, asset, output);
-    if(!fs.existsSync(output)) throw "Output file not detected. It may permission problem";
+        fs.rmSync(tmpDir, {recursive: true});
+        console.log("Done");
+    } catch(e) {
+        console.log(e);
+    }
+};
 
-    if(fs.existsSync(extractDir)) fs.rmSync(extractDir, { recursive: true});
-    fs.mkdirSync(extractDir);
-
-    console.log("Extracting " + asset.name + '...');
-    await decompress(output, extractDir);
-    console.log("Done");
-}
+main();
