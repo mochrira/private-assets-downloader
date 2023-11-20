@@ -2,6 +2,7 @@
 
 namespace Wajek;
 
+use Selvi\Response;
 use Console_CommandLine;
 
 class Pad {
@@ -151,7 +152,7 @@ class Pad {
             }
 
             self::rmdir($tmpDir);
-            echo "Done\n";
+            return new Response('Done.');
         } catch(\Exception $e) {
             $parser->displayError($e->getMessage());
         }
