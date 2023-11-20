@@ -47,7 +47,7 @@ async function main() {
         .requiredOption('-a, --asset <char>', 'Asset filename')
         .requiredOption('-d, --dest <char>', 'Destination directory')
         .option('-v, --version <char>', 'Version, default: latest, Example: tags/1.7.3', 'latest')
-        .option('-t, --tmp <char>', 'Tmp directory, default: .tmp', '.tmp');
+        .option('-t, --tmp <char>', 'Temporary directory, default: .tmp', '.tmp');
 
         program.parse();
 
@@ -87,7 +87,7 @@ async function main() {
         let output = path.resolve(tmpDir, assetDetails.name);
         console.log("Downloading " + assetDetails.name + '...');
         await downloadAsset(token, assetDetails, output);
-        if(!fs.existsSync(output)) throw "Output file not created. It may permission problem";
+        if(!fs.existsSync(output)) throw "Output file not created. It may permission problem on tmp directory";
 
         console.log("Extracting " + assetDetails.name + '...');
         await decompress(output, extractDir);

@@ -1,3 +1,6 @@
 node_modules/
 core/
 api/
+vendor/
+.docker/
+test.php
