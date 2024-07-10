@@ -9,6 +9,6 @@
     },
     "require": {
         "pear/console_commandline": "1.2.2",
-        "mochrira/selvi-framework": "^1.2"
+        "mochrira/selvi-framework": "^2.1"
     }
 }

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b7b1640cac313f1ba3c6d560525fde3",
+    "content-hash": "714afffc4d22b6c37e89d64ce81b2943",
     "packages": [
         {
             "name": "mochrira/selvi-framework",
-            "version": "1.2.7",
+            "version": "2.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mochrira/selvi-framework.git",
-                "reference": "2b12f2bac012f7f3ff2f64a360ad78f689cc961b"
+                "reference": "6b4f4e562ad11a80ade4ec7e050f4285dbaa6945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mochrira/selvi-framework/zipball/2b12f2bac012f7f3ff2f64a360ad78f689cc961b",
-                "reference": "2b12f2bac012f7f3ff2f64a360ad78f689cc961b",
+                "url": "https://api.github.com/repos/mochrira/selvi-framework/zipball/6b4f4e562ad11a80ade4ec7e050f4285dbaa6945",
+                "reference": "6b4f4e562ad11a80ade4ec7e050f4285dbaa6945",
                 "shasum": ""
             },
             "type": "library",
@@ -42,9 +42,9 @@
             "description": "Super fast PHP Framework for building API",
             "support": {
                 "issues": "https://github.com/mochrira/selvi-framework/issues",
-                "source": "https://github.com/mochrira/selvi-framework/tree/1.2.7"
+                "source": "https://github.com/mochrira/selvi-framework/tree/2.1.13"
             },
-            "time": "2023-11-02T08:26:15+00:00"
+            "time": "2024-07-10T08:45:37+00:00"
         },
         {
             "name": "pear/console_commandline",

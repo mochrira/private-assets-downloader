@@ -2,7 +2,7 @@
 
 namespace Wajek;
 
-use Selvi\Response;
+use Selvi\Output\Response;
 use Console_CommandLine;
 
 class Pad {
