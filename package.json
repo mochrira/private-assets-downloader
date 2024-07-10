@@ -1,6 +1,6 @@
 {
   "name": "@wajek/pad",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Github Private Assets Downloader",
   "main": "index.js",
   "author": "",
