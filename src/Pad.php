@@ -1,6 +1,6 @@
 <?php 
 
-namespace Wajek;
+namespace Selvi;
 
 use Selvi\Output\Response;
 use Console_CommandLine;

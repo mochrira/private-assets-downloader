@@ -1,10 +1,10 @@
 {
-    "name": "wajek/pad",
+    "name": "mochrira/selvi-pad",
     "description": "Github private assets downloader",
     "version": "1.1.5",
     "autoload": {
         "psr-4": {
-            "Wajek\\": "./Wajek"
+            "Selvi\\": "./src"
         }
     },
     "require": {
